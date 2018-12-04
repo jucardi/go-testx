@@ -3,7 +3,7 @@ package assert
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/jucardi/gotestx/testutilx"
+	"github.com/jucardi/go-testx/testutilx"
 	"gopkg.in/jucardi/go-terminal-colors.v1"
 	"math"
 	"os"

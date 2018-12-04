@@ -2,7 +2,7 @@ package assert
 
 import (
 	"fmt"
-	"github.com/jucardi/gotestx/testutilx"
+	"github.com/jucardi/go-testx/testutilx"
 	"math"
 	"reflect"
 	"regexp"
@@ -62,7 +62,7 @@ func CallerInfo() []string {
 		file = parts[len(parts)-1]
 		if len(parts) > 1 {
 			dir := parts[len(parts)-2]
-			if dir != "gotestx" && dir != "testx" && dir != "assert" {
+			if dir != "go-testx" && dir != "testx" && dir != "assert" {
 				callers = append(callers, fmt.Sprintf("%s:%d", file, line))
 			}
 		}

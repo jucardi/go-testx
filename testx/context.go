@@ -1,7 +1,7 @@
 package testx
 
 import (
-	"github.com/jucardi/gotestx/assert"
+	"github.com/jucardi/go-testx/assert"
 	"gopkg.in/jucardi/go-logger-lib.v1/log"
 	"gopkg.in/jucardi/go-terminal-colors.v1"
 	"io"

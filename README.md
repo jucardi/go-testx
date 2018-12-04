@@ -1,4 +1,4 @@
-# gotestx
+# go-testx
 
 Testing suite inspired in https://github.com/stretchr/testify and https://github.com/smartystreets/goconvey
 

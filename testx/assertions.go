@@ -1,7 +1,7 @@
 package testx
 
 import (
-	"github.com/jucardi/gotestx/assert"
+	"github.com/jucardi/go-testx/assert"
 	"time"
 )
 
