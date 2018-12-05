@@ -9,7 +9,7 @@ import (
 func Convey(description string, t *testing.T, f func()) {
 	ctx := newCtx(t)
 	contextPile = append(contextPile, ctx)
-	ctx.Println("\n").PrintIndent(description+" ", descriptionColor()...)
+	ctx.Println("").PrintIndent(description+" ", descriptionColor()...)
 	f()
 	if len(contextPile) <= 2 {
 		ctx.Println(fmt.Sprintf("\n\n%d total assertions", ctx.assertions), assertionsColor()...)
