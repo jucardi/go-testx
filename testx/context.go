@@ -13,6 +13,7 @@ import (
 const singleIndent = "    "
 
 var (
+	previous    = 0
 	contextPile = []*context{newCtx(nil)}
 
 	// Ensure implementation of these interfaces on build.
