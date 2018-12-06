@@ -12,7 +12,7 @@ func Convey(description string, t *testing.T, f func()) {
 	ctx.Println("").PrintIndent(description+" ", descriptionColor()...)
 	f()
 	if len(contextPile) <= 2 {
-		ctx.Println(fmt.Sprintf("\n\n%d total assertions", ctx.assertions), assertionsColor()...)
+		ctx.Println("\n").Println(fmt.Sprintf("%d total assertions", ctx.assertions), assertionsColor()...).Println("")
 	}
 	contextPile = contextPile[:len(contextPile)-1]
 	currentCtx().assertions += ctx.assertions

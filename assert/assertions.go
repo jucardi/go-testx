@@ -56,12 +56,12 @@ func Fail(t TestingT, failureMessage string, msgAndArgs ...interface{}) bool {
 
 	content = append(content, labeledContent{
 		fmtc.New().Print("At:", colorErrLabels...).String(),
-		fmtc.New().Print(strings.Join(CallerInfo(), "\n\t\t\t"), colorErrStack...).String()},
+		fmtc.New().PrintLn(strings.Join(CallerInfo(), "\n    "), colorErrStack...).PrintLn("").String()},
 	)
 
 	content = append(content, labeledContent{
 		fmtc.New().Print("Error:", colorErrLabels...).String(),
-		fmtc.New().Print(failureMessage, colorFailureMsg...).String()},
+		fmtc.New().Print(strings.Replace(failureMessage, "\n", "\n    ", -1), colorFailureMsg...).String()},
 	)
 
 	// Add test name if the Go version supports it
@@ -70,8 +70,18 @@ func Fail(t TestingT, failureMessage string, msgAndArgs ...interface{}) bool {
 	//}); ok {
 	//	content = append(content, labeledContent{"Test", n.Name()})
 	//}
+	if n, ok := t.(IAssertLogger); ok {
+		n.FailMsgf("\n\n%s", ""+labeledOutput(content...))
+	} else {
+		t.Errorf("\n\n%s", ""+labeledOutput(content...))
+	}
 
-	t.Errorf("\n\n%s", ""+labeledOutput(content...))
+	// Add test name if the Go version supports it
+	if n, ok := t.(interface {
+		Fail()
+	}); ok {
+		n.Fail()
+	}
 
 	return false
 }
@@ -124,6 +134,9 @@ func Equal(t TestingT, expected, actual interface{}, msgAndArgs ...interface{}) 
 
 	if !testutilx.ObjectsAreEqual(expected, actual) {
 		diff := diff(expected, actual)
+		if diff != "" {
+			diff = diff + "\n"
+		}
 		expected, actual = formatUnequalValues(expected, actual)
 		return Fail(t,
 			fmtc.New().
@@ -132,7 +145,7 @@ func Equal(t TestingT, expected, actual interface{}, msgAndArgs ...interface{}) 
 				Print("expected: ", colorSubLabels...).PrintLn(expected).
 				Print("actual  : ", colorSubLabels...).PrintLn(actual).
 				PrintLn("").
-				PrintLn(diff).
+				Print(diff).
 				String(),
 			msgAndArgs...)
 	}

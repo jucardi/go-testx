@@ -96,14 +96,10 @@ func (c *context) Warnf(format string, args ...interface{}) {
 
 func (c *context) Error(args ...interface{}) {
 	c.logEntry(log.ErrorLevel, fmt.Sprint(args...))
-	//msg := fmt.Sprint(args...)
-	//c.t.Error(c.doIndent(msg))
 }
 
 func (c *context) Errorf(format string, args ...interface{}) {
 	c.logEntry(log.ErrorLevel, fmt.Sprintf(format, args...))
-	//msg := fmt.Sprintf(format, args...)
-	//c.t.Error(c.doIndent(msg))
 }
 
 func (c *context) Fatal(args ...interface{}) {

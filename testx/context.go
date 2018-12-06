@@ -1,6 +1,7 @@
 package testx
 
 import (
+	"fmt"
 	"github.com/jucardi/go-testx/assert"
 	"gopkg.in/jucardi/go-logger-lib.v1/log"
 	"gopkg.in/jucardi/go-terminal-colors.v1"
@@ -23,6 +24,7 @@ var (
 
 type context struct {
 	assertions int
+	failures   int
 	level      log.Level
 	offsetLn   int
 	rows       int
@@ -66,6 +68,14 @@ func (c *context) Sprint(str string, colors ...fmtc.Color) string {
 	return fmtc.New().Print(str, colors...).String()
 }
 
+func (c *context) FailMsgf(format string, args ...interface{}) {
+	str := "✘"
+	c.Print(str, fmtc.Red, fmtc.Bold)
+	c.failures++
+	msg := fmt.Sprintf(format, args...)
+	c.PrintIndent(msg)
+}
+
 func (c *context) Increment() {
 	str := "✔"
 	c.Print(str, fmtc.Green, fmtc.Bold)
@@ -78,6 +88,10 @@ func (c *context) FailNow() {
 
 func (c *context) Helper() {
 	c.t.Helper()
+}
+
+func (c *context) Fail() {
+	c.t.Fail()
 }
 
 func (c *context) indent() string {

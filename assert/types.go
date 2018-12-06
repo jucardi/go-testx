@@ -2,8 +2,11 @@ package assert
 
 // TestingT is an interface wrapper around *testing.T
 type TestingT interface {
-	Error(args ...interface{})
 	Errorf(format string, args ...interface{})
+}
+
+type IAssertLogger interface {
+	FailMsgf(format string, args ...interface{})
 }
 
 type IAssertsCounter interface {
