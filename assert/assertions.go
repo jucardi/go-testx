@@ -256,11 +256,26 @@ func Len(t TestingT, object interface{}, length int, msgAndArgs ...interface{}) 
 	helper(t)
 	ok, l := getLen(object)
 	if !ok {
-		return Fail(t, fmt.Sprintf("\"%s\" could not be applied builtin len()", object), msgAndArgs...)
+		return Fail(t,
+			fmtc.New().
+				PrintLn("'Len()' is not available for object", colorFailureMsg...).
+				PrintLn(object, colorDiff...).
+				String(),
+			msgAndArgs...)
 	}
 
 	if l != length {
-		return Fail(t, fmt.Sprintf("\"%s\" should have %d item(s), but has %d", object, length, l), msgAndArgs...)
+		return Fail(t,
+			fmtc.New().
+				PrintLn("Length mismatch for", colorFailureMsg...).
+				PrintLn("").
+				Print("    > ").PrintLn(object, colorDiff...).
+				PrintLn("").
+				Print("expected: ", colorSubLabels...).PrintLn(length).
+				Print("actual  : ", colorSubLabels...).PrintLn(l).
+				PrintLn("").
+				String(),
+			msgAndArgs...)
 	}
 	addAssert(t)
 	return true
@@ -277,8 +292,8 @@ func True(t TestingT, value bool, msgAndArgs ...interface{}) bool {
 		h.Helper()
 	}
 
-	if value != true {
-		return Fail(t, "Should be true", msgAndArgs...)
+	if !value {
+		return Fail(t, fmtc.New().PrintLn("Should be true", colorFailureMsg...).String(), msgAndArgs...)
 	}
 
 	addAssert(t)
@@ -291,8 +306,8 @@ func True(t TestingT, value bool, msgAndArgs ...interface{}) bool {
 func False(t TestingT, value bool, msgAndArgs ...interface{}) bool {
 	helper(t)
 
-	if value != false {
-		return Fail(t, "Should be false", msgAndArgs...)
+	if value {
+		return Fail(t, fmtc.New().PrintLn("Should be false", colorFailureMsg...).String(), msgAndArgs...)
 	}
 
 	addAssert(t)
@@ -313,7 +328,14 @@ func NotEqual(t TestingT, expected, actual interface{}, msgAndArgs ...interface{
 	}
 
 	if testutilx.ObjectsAreEqual(expected, actual) {
-		return Fail(t, fmt.Sprintf("Should not be: %#v\n", actual), msgAndArgs...)
+		return Fail(t,
+			fmtc.New().
+				PrintLn("Should not be equal", colorFailureMsg...).
+				PrintLn("").
+				Print("actual  : ", colorSubLabels...).PrintLn(actual).
+				PrintLn("").
+				String(),
+			msgAndArgs...)
 	}
 
 	addAssert(t)
@@ -464,11 +486,19 @@ func ElementsMatch(t TestingT, listA, listB interface{}, msgAndArgs ...interface
 	bKind := reflect.TypeOf(listB).Kind()
 
 	if aKind != reflect.Array && aKind != reflect.Slice {
-		return Fail(t, fmt.Sprintf("%q has an unsupported type %s", listA, aKind), msgAndArgs...)
+		return Fail(t,
+			fmtc.New().
+				PrintLn(fmt.Sprintf("%q has an unsupported type %s", listA, aKind)).
+				String(),
+			msgAndArgs...)
 	}
 
 	if bKind != reflect.Array && bKind != reflect.Slice {
-		return Fail(t, fmt.Sprintf("%q has an unsupported type %s", listB, bKind), msgAndArgs...)
+		return Fail(t,
+			fmtc.New().
+				PrintLn(fmt.Sprintf("%q has an unsupported type %s", listB, aKind)).
+				String(),
+			msgAndArgs...)
 	}
 
 	aValue := reflect.ValueOf(listA)
@@ -478,7 +508,11 @@ func ElementsMatch(t TestingT, listA, listB interface{}, msgAndArgs ...interface
 	bLen := bValue.Len()
 
 	if aLen != bLen {
-		return Fail(t, fmt.Sprintf("lengths don't match: %d != %d", aLen, bLen), msgAndArgs...)
+		return Fail(t,
+			fmtc.New().
+				PrintLn(fmt.Sprintf("lengths mismatch: %d != %d", aLen, bLen)).
+				String(),
+			msgAndArgs...)
 	}
 
 	// Mark indexes in bValue that we already used
@@ -497,7 +531,13 @@ func ElementsMatch(t TestingT, listA, listB interface{}, msgAndArgs ...interface
 			}
 		}
 		if !found {
-			return Fail(t, fmt.Sprintf("element %s appears more times in %s than in %s", element, aValue, bValue), msgAndArgs...)
+			return Fail(t,
+				fmtc.New().
+					Print("Element                 ").PrintLn(element, colorDiff...).
+					Print("appears more times in   ").PrintLn(aValue, colorDiff...).
+					Print("than                    ").PrintLn(bValue, colorDiff...).
+					String(),
+				msgAndArgs...)
 		}
 	}
 
