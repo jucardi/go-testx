@@ -765,7 +765,7 @@ func InEpsilonSlice(t TestingT, expected, actual interface{}, epsilon float64, m
 //   }
 func NoError(t TestingT, err error, msgAndArgs ...interface{}) bool {
 	helper(t)
-	if err != nil {
+	if err != nil && !reflect.ValueOf(err).IsNil() {
 		return Fail(t, fmt.Sprintf("Received unexpected error:\n%+v", err), msgAndArgs...)
 	}
 
@@ -782,7 +782,7 @@ func NoError(t TestingT, err error, msgAndArgs ...interface{}) bool {
 func Error(t TestingT, err error, msgAndArgs ...interface{}) bool {
 	helper(t)
 
-	if err == nil {
+	if err == nil || reflect.ValueOf(err).IsNil() {
 		return Fail(t, "An error is expected but got nil.", msgAndArgs...)
 	}
 
