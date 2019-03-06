@@ -765,12 +765,13 @@ func InEpsilonSlice(t TestingT, expected, actual interface{}, epsilon float64, m
 //   }
 func NoError(t TestingT, err error, msgAndArgs ...interface{}) bool {
 	helper(t)
-	if err != nil && !reflect.ValueOf(err).IsNil() {
-		return Fail(t, fmt.Sprintf("Received unexpected error:\n%+v", err), msgAndArgs...)
+
+	if err == nil || !reflect.ValueOf(err).IsValid() || (reflect.ValueOf(err).Kind() == reflect.Ptr && reflect.ValueOf(err).IsNil()) {
+		addAssert(t)
+		return true
 	}
 
-	addAssert(t)
-	return true
+	return Fail(t, fmt.Sprintf("Received unexpected error:\n%+v", err), msgAndArgs...)
 }
 
 // Error asserts that a function returned an error (i.e. not `nil`).
@@ -782,8 +783,8 @@ func NoError(t TestingT, err error, msgAndArgs ...interface{}) bool {
 func Error(t TestingT, err error, msgAndArgs ...interface{}) bool {
 	helper(t)
 
-	if err == nil || reflect.ValueOf(err).IsNil() {
-		return Fail(t, "An error is expected but got nil.", msgAndArgs...)
+	if err == nil || !reflect.ValueOf(err).IsValid() || (reflect.ValueOf(err).Kind() == reflect.Ptr && reflect.ValueOf(err).IsNil()) {
+		return Fail(t, "An error is expected but got nil or invalid error.", msgAndArgs...)
 	}
 
 	addAssert(t)
