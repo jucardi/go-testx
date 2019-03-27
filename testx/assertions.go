@@ -5,6 +5,11 @@ import (
 	"time"
 )
 
+// OnFailure registers a callback that will be executed if a test fails
+func OnFailure(handler func()) {
+	assert.OnFailure(handler)
+}
+
 // FailNow fails test
 func FailNow(failureMessage string, msgAndArgs ...interface{}) bool {
 	return assert.FailNow(currentCtx(), failureMessage, msgAndArgs...)

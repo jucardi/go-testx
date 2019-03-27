@@ -19,7 +19,14 @@ var (
 	colorErrLabels  = []fmtc.Color{fmtc.Bold, fmtc.Red}
 	colorSubLabels  = []fmtc.Color{fmtc.Bold}
 	colorDiff       = []fmtc.Color{fmtc.Yellow}
+
+	onFailureCallback func()
 )
+
+// OnFailure registers a callback that will be executed if a test fails
+func OnFailure(handler func()) {
+	onFailureCallback = handler
+}
 
 // FailNow fails test
 func FailNow(t TestingT, failureMessage string, msgAndArgs ...interface{}) bool {
@@ -64,12 +71,6 @@ func Fail(t TestingT, failureMessage string, msgAndArgs ...interface{}) bool {
 		fmtc.New().Print(strings.Replace(failureMessage, "\n", "\n    ", -1), colorFailureMsg...).String()},
 	)
 
-	// Add test name if the Go version supports it
-	//if n, ok := t.(interface {
-	//	Name() string
-	//}); ok {
-	//	content = append(content, labeledContent{"Test", n.Name()})
-	//}
 	if n, ok := t.(IAssertLogger); ok {
 		n.FailMsgf("\n\n%s", ""+labeledOutput(content...))
 	} else {
@@ -81,6 +82,10 @@ func Fail(t TestingT, failureMessage string, msgAndArgs ...interface{}) bool {
 		Fail()
 	}); ok {
 		n.Fail()
+	}
+
+	if onFailureCallback != nil {
+		onFailureCallback()
 	}
 
 	return false
