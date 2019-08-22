@@ -13,7 +13,7 @@ func MarshalYAML(obj interface{}) string {
 }
 
 func MarshalJSON(obj interface{}) string {
-	return marshalObj(obj, json.Marshal())
+	return marshalObj(obj, json.Marshal)
 }
 
 func MarshalJSONIndent(obj interface{}) string {
