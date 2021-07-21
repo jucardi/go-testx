@@ -2,9 +2,9 @@ package testx
 
 import (
 	"fmt"
-	"gopkg.in/jucardi/go-iso8601.v1"
-	"gopkg.in/jucardi/go-logger-lib.v1/log"
-	"gopkg.in/jucardi/go-terminal-colors.v1"
+	"github.com/jucardi/go-iso8601"
+	"github.com/jucardi/go-logger-lib/log"
+	"github.com/jucardi/go-terminal-colors"
 	"io"
 	"os"
 	"time"

@@ -2,7 +2,7 @@ package testx
 
 import (
 	"fmt"
-	"gopkg.in/jucardi/go-terminal-colors.v1"
+	"github.com/jucardi/go-terminal-colors"
 	"testing"
 )
 

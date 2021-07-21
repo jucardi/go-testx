@@ -6,7 +6,7 @@ import (
 	"errors"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/pmezard/go-difflib/difflib"
-	"gopkg.in/jucardi/go-terminal-colors.v1"
+	"github.com/jucardi/go-terminal-colors"
 	"reflect"
 	"strings"
 )

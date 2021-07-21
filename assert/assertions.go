@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/jucardi/go-testx/testutilx"
-	"gopkg.in/jucardi/go-terminal-colors.v1"
+	"github.com/jucardi/go-terminal-colors"
 	"math"
 	"os"
 	"reflect"

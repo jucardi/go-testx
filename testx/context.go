@@ -3,8 +3,8 @@ package testx
 import (
 	"fmt"
 	"github.com/jucardi/go-testx/assert"
-	"gopkg.in/jucardi/go-logger-lib.v1/log"
-	"gopkg.in/jucardi/go-terminal-colors.v1"
+	"github.com/jucardi/go-logger-lib/log"
+	"github.com/jucardi/go-terminal-colors"
 	"io"
 	"strings"
 	"testing"
