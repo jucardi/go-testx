@@ -41,10 +41,10 @@ func IsType(expectedType interface{}, object interface{}, msgAndArgs ...interfac
 // referenced values (as opposed to the memory addresses). Function equality
 // cannot be determined and will always fail.
 func ShouldEqual(expected, actual interface{}, msgAndArgs ...interface{}) bool {
-	return assert.Equal(currentCtx(), expected, actual, msgAndArgs ...)
+	return assert.Equal(currentCtx(), expected, actual, msgAndArgs...)
 }
 
-// EqualValues asserts that two objects are equal or convertable to the same types
+// ShouldEqualValues asserts that two objects are equal or convertable to the same types
 // and equal.
 //
 //    EqualValues(uint32(123), int32(123))
